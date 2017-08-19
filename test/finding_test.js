@@ -3,8 +3,9 @@ const MarioChar = require('../models/mariochar');
 
 // Describe tests
 describe('Finding records', () => {
+  let char;
   beforeEach(done => {
-    const char = new MarioChar({
+    char = new MarioChar({
       name: 'Mario'
     });
     char.save().then(() => {
@@ -22,6 +23,12 @@ describe('Finding records', () => {
   it('Does not find not existent record from the database', done => {
     MarioChar.findOne({ name: 'Yoshi' }).then(result => {
       assert(result === null && typeof result === 'object'); // test on null
+      done();
+    });
+  });
+  it('Finds one record by ID from the database', done => {
+    MarioChar.findOne({ _id: char._id }).then(result => {
+      assert(result._id.toString() === char._id.toString());
       done();
     });
   });
