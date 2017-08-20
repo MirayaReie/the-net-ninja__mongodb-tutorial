@@ -2,7 +2,7 @@ const assert = require('assert');
 const MarioChar = require('../models/mariochar');
 
 // Describe test
-describe('Deleting records', () => {
+describe('Updating records', () => {
   let char;
   beforeEach(done => {
     char = new MarioChar({
@@ -14,10 +14,13 @@ describe('Deleting records', () => {
   });
 
   // Create test
-  it('Deletes one record from the database', done => {
-    MarioChar.findOneAndRemove({ name: 'Mario' }).then(() => {
-      MarioChar.findOne({ name: 'Mario' }).then(result => {
-        assert(result === null && typeof result === 'object');
+  it('Updates one record from the database', done => {
+    MarioChar.findOneAndUpdate(
+      { name: 'Mario' },
+      { name: 'Luigi' }
+    ).then(() => {
+      MarioChar.findOne({ _id: char._id }).then(result => {
+        assert(result.name.toString() === 'Luigi');
         done();
       });
     });
